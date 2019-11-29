@@ -1,0 +1,6 @@
+<<<<<<< HEAD
+/node_modules
+=======
+*.scss
+>>>>>>> ebfdb81313e35170c6a5c0352b06ed75f818d16f
+*.map
