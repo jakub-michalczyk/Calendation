@@ -1,6 +1,5 @@
 let eventsList = [];
 let activeMonth;
-let adding;
 let newEvent;
 let currentlyEdited = null;
 
@@ -26,6 +25,10 @@ class Event{
 
     monthsList.forEach( li => {
         li.addEventListener('click', e => {
+            monthsList.forEach( li => {
+                li.className = "";
+            });
+            li.className = "currentMonth";
             activeMonth = e.target.dataset.id;
             //Create day boxes for specifed month
             return createDayBoxes(Number(e.target.dataset.id));
@@ -34,22 +37,32 @@ class Event{
 
     hamburgerBox.addEventListener('click', menuToggle);
 
+    findCurrentMonth();
     createDayBoxes();
     return checkStorage();
 })();
 
-function checkStorage(){
-    if(localStorage.getItem('event') !== null){
-        let storageEvents = localStorage.getItem('event');
+function findCurrentMonth(){
+    document.querySelector(`#monthsList li[data-id='${new Date().getMonth() + 1}']`).className = "currentMonth";
+}
 
-        eventsList = JSON.parse(storageEvents);
-        eventsList.forEach( event => {
-            let eventDay = event.date.split('-')[0];
-            eventDay[0] === '0' ? eventDay = eventDay.substring(1) : null; //Check if day which has event is lower than 10, and if true cut the '0'
-            if(event.month === activeMonth){
-                return createEventMiniature(document.querySelector(`.dayBox[data-id="${eventDay}"]`), event);
-            }  
-        });  
+function checkStorage(){
+    try{
+        if(localStorage.getItem('event') !== null){
+            let storageEvents = localStorage.getItem('event');
+    
+            eventsList = JSON.parse(storageEvents);
+            eventsList.forEach( event => {
+                let eventDay = event.date.split('-')[0];
+                eventDay[0] === '0' ? eventDay = eventDay.substring(1) : null; //Check if day which has event is lower than 10, and if true cut the '0'
+                if(event.month === activeMonth){
+                    return createEventMiniature(document.querySelector(`.dayBox[data-id="${eventDay}"]`), event);
+                }  
+            });  
+        }
+    }
+    catch(e){
+        console.log(e)
     }
 }
 
@@ -134,7 +147,6 @@ function creatingEventBox(e){
         popup.id = 'addingBox';
         
         document.body.append(popup, overlayer);
-        adding = document.querySelector('#addingBox');
         popup.className = 'popUpAnimation';
 
         if(e.target.nodeName === 'IMG' || e.target.id === 'overlayerInfo'){
@@ -157,7 +169,7 @@ function creatingEventBox(e){
 function createEventModulationBox(action, hour, minutes, title){
     let time = `${hour}:${minutes}`;
 
-    adding.innerHTML =
+    document.querySelector('#addingBox').innerHTML =
         `<div id="popUpShowing">
             <div id="closePopup">
                 <i class='fas fa-close'></i>
@@ -180,17 +192,22 @@ function createEventModulationButtons(action){
     let buttonsArr = [];
 
     //CREATE FEW BUTTONS, DEPENDING ON THE ACTION
-    for (let i = 0; i <= 3; i++) {
+    for (let i = 0; i <= 4; i++) {
         buttonsArr.push(document.createElement('div'));
         if (i === 0) {
             buttonsArr[i].id = 'buttonsBox';
         }
         else if (i === 1) {
             buttonsArr[i].className = 'readyButton';
+            buttonsArr[i].id = 'placeholderImgBtn';
+            buttonsArr[i].textContent = 'Wybierz zdjęcie';
+        }
+        else if (i === 2) {
+            buttonsArr[i].className = 'readyButton';
             buttonsArr[i].id = 'uploadButton';
             buttonsArr[i].textContent = 'Dodaj miniaturkę';
         }
-        else if (i === 2) {
+        else if (i === 3) {
             buttonsArr[i].className = 'saveEditedEvent';
             buttonsArr[i].id = 'checkButton';
             buttonsArr[i].textContent = 'Zapisz zmiany';
@@ -198,19 +215,19 @@ function createEventModulationButtons(action){
     }
 
     if (action === 'Dodawanie') {
-        buttonsArr[0].append(buttonsArr[1])
+        buttonsArr[0].append(buttonsArr[1], buttonsArr[2])
     }
     else {
-        buttonsArr[1].textContent = 'Dodaj nową miniaturkę';
-        buttonsArr[2].textContent = 'Zapisz zmiany';
-        buttonsArr[0].append(buttonsArr[1], buttonsArr[2]);
+        buttonsArr[2].textContent = 'Dodaj nową miniaturkę';
+        buttonsArr[3].textContent = 'Zapisz zmiany';
+        buttonsArr[0].append(buttonsArr[2], buttonsArr[3]);
     }
 
     document.querySelector('#popUpShowing').appendChild(buttonsArr[0]);
     document.querySelector('#closePopup').addEventListener('click', removeEventBox);
 
     document.querySelectorAll('.readyButton').forEach( btn => {
-        if(btn.textContent !== 'Dodaj nową miniaturkę'){
+        if(btn.textContent === 'Dodaj miniaturkę' || btn.textContent === 'Zapisz zmiany' || btn.textContent === 'Wybierz zdjęcie') {
             btn.addEventListener('click', saveInfo);
         }
         else{
@@ -224,7 +241,41 @@ function createEventModulationButtons(action){
 
 function removeEventBox(){
     document.querySelector('#overlayer').remove();
-    adding.remove();
+    document.querySelector('#addingBox').remove();
+}
+
+function choosePlaceholderImg(){
+    document.querySelector("#addingBox").innerHTML = 
+        `
+            <h2>Wybierz miniaturkę twojego wydarzenia</h2>
+            <div id="imageBox">
+                <div class="placeholderImg choosedImg">
+                   <img src="../img/1.jpg">
+                </div>
+                <div class="placeholderImg">
+                    <img src="../img/2.jpg">
+                </div>
+                <div class="placeholderImg">
+                    <img src="../img/3.jpg">
+                </div>
+                <div class="placeholderImg">
+                    <img src="../img/4.jpg">
+                </div>
+                <div class="placeholderImg">
+                    <img src="../img/5.jpg">
+                </div> 
+            </div>
+            <div id="choosePlaceholderImg">Wybierz miniaturkę</div>
+        `;
+
+    document.querySelectorAll(".placeholderImg").forEach(img => {
+        img.addEventListener("click", e => {
+            document.querySelectorAll(".placeholderImg").forEach(img => img.className = "placeholderImg");
+            e.currentTarget.className += " choosedImg";
+        });
+    });
+    
+    document.querySelector("#choosePlaceholderImg").addEventListener("click", saveImg);
 }
 
 function editEvent(day){
@@ -243,14 +294,14 @@ function editEvent(day){
             title = event.title;
         }
     });
-    
+
     Number(day) < 10 ? day = '0' + day : null;
     
     createEventModulationBox('Edycja', hour, minutes, title);
     eventBoxAnimation();
 
     document.querySelector('#eventDate').textContent = `${day}-${month}-${new Date().getFullYear()}`;
-    document.querySelector('#checkButton').addEventListener('click', saveEditedEvent);
+    document.querySelector('#checkButton') !== null ? document.querySelector('#checkButton').addEventListener('click', saveEditedEvent) : null;
 }
 
 function saveEditedEvent(){
@@ -313,7 +364,7 @@ function saveInfo(e){
             null
         );
 
-        e.target.id === 'drawButton' ? drawImgSetup() : addURL();
+        e.target.id === 'placeholderImgBtn' ? choosePlaceholderImg() : addURL();
     }
 }
 
@@ -390,7 +441,13 @@ function removeEvent(e){
 }
 
 function addToStorage(name, itemToAdd){
-    localStorage.setItem(name, JSON.stringify(itemToAdd));
+    try{
+        localStorage.setItem(name, JSON.stringify(itemToAdd));
+    }
+    catch(e){
+        console.log(e)
+    }
+
 }
 
 function menuToggle(){
@@ -430,7 +487,7 @@ function menuToggle(){
 }
 
 function addURL() {
-    adding.innerHTML =
+    document.querySelector('#addingBox').innerHTML =
         `<div id="closeAddingURL">
             <i class='fas fa-close'></i>
          </div>
@@ -479,8 +536,13 @@ function imageDataURL(file) {
 
 function saveImg(){
     if(currentlyEdited === null){
-        if(document.querySelector('#drop').dataset.dropped === 'drop'){
-            newEvent.img = document.querySelector('#drop img').src ;
+        if(document.querySelector('#drop') !== null){
+            if(document.querySelector('#drop').dataset.dropped === 'drop'){
+                newEvent.img = document.querySelector('#drop img').src ;
+            }
+        }
+        else if(document.querySelector("#imageBox") !== null){
+            newEvent.img = document.querySelector('.choosedImg').children[0].src;
         }
         else{
             newEvent.img = document.querySelector('#url').value;
@@ -503,5 +565,3 @@ function saveImg(){
         removeEventBox();
     }
 }
-
-

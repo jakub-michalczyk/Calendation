@@ -74,18 +74,16 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
   width: 80px;
   height: 80px;
-  position: absolute;
-  top: -1%;
-  left: -1%;
+  position: fixed;
+  top: 0%;
+  left: 0%;
   z-index: 11;
   cursor: pointer;
 }
 #hamburgerBox #hamburger {
   position: absolute;
-  top: 35%;
   transition: all 0.2s;
 }
 #hamburgerBox #hamburger span {
@@ -135,6 +133,10 @@ nav ul {
   margin: 25% 0 0 0;
   padding: 0;
   list-style-type: none;
+}
+nav ul .currentMonth {
+  background: #fff;
+  color: #65913d;
 }
 nav ul li {
   display: flex;
@@ -250,13 +252,13 @@ nav ul li:hover {
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 1%;
-  right: 1%;
+  top: 1.5%;
+  right: 1.5%;
   color: #65913d;
   font-size: 17px;
   transition: all 0.3s;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   transition: all 0.3s;
   background: #fff;
   border-radius: 50%;
@@ -388,6 +390,49 @@ nav ul li:hover {
   align-items: center;
   color: #1d1d1d;
 }
+#addingBox #imageBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: auto;
+}
+#addingBox #imageBox .choosedImg {
+  transition: transform 0.2s;
+  transform: scale(1.5);
+  border: 5px solid #65913d;
+}
+#addingBox #imageBox .placeholderImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  height: 20%;
+  margin: 10% 5%;
+  cursor: pointer;
+  -webkit-box-shadow: 4px 7px 12px -2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 4px 7px 12px -2px rgba(0, 0, 0, 0.75);
+  box-shadow: 4px 7px 12px -2px rgba(0, 0, 0, 0.75);
+}
+#addingBox #imageBox .placeholderImg img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+#addingBox #choosePlaceholderImg {
+  text-align: center;
+  background: #65913d;
+  color: #fff;
+  border: 2px solid #65913d;
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+#addingBox #choosePlaceholderImg:hover {
+  color: #65913d;
+  background: #fff;
+}
 #addingBox #popUpShowing {
   display: flex;
   justify-content: center;
@@ -407,9 +452,9 @@ nav ul li:hover {
   right: 1%;
   font-size: 20px;
   transition: all 0.2s;
-  padding: 10px;
-  width: 50px;
-  height: 50px;
+  padding: 7px;
+  width: 45px;
+  height: 45px;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -519,17 +564,18 @@ nav ul li:hover {
   color: #65913d;
   background: #fff;
 }
-#addingBox #popUpShowing #buttonsBox #uploadButton {
+#addingBox #popUpShowing #buttonsBox #uploadButton, #addingBox #popUpShowing #buttonsBox #placeholderImgBtn {
   text-align: center;
   color: #65913d;
   padding: 10px 15px;
+  width: 30%;
   border: 2px solid #65913d;
   border-radius: 3px;
   margin: 70px 0 0 0;
   cursor: pointer;
   transition: all 0.3s;
 }
-#addingBox #popUpShowing #buttonsBox #uploadButton:hover {
+#addingBox #popUpShowing #buttonsBox #uploadButton:hover, #addingBox #popUpShowing #buttonsBox #placeholderImgBtn:hover {
   background: #65913d;
   color: #fff;
 }
