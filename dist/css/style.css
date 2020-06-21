@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Fredoka+One|Roboto+Condensed&display=swap");
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 900px) {
   .dayBox {
     width: 80px !important;
     height: 80px !important;
@@ -20,6 +20,7 @@
 
   #addingBox {
     width: 95% !important;
+    overflow-y: scroll !important;
   }
   #addingBox h2 {
     margin-top: 30%;
@@ -47,16 +48,12 @@
   .readyButton, .saveEditedEvent {
     font-size: 14px !important;
     padding: 10px 10px !important;
+    margin-top: 0 !important;
   }
 
   .readyButton {
-    width: 550px !important;
-    margin-right: 10px;
-  }
-
-  .saveEditedEvent {
-    width: 250px;
-    margin-left: 10px;
+    min-width: 40% !important;
+    margin: 5% 1% !important;
   }
 }
 body, html {

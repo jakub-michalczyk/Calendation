@@ -28,7 +28,7 @@ $darkgrey: #666;
 $white: #fff;
 $lightblack: #1d1d1d;
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 900px) {
     .dayBox{
         width:80px !important;
         height:80px !important;
@@ -49,6 +49,7 @@ $lightblack: #1d1d1d;
     }
     #addingBox{
         width:95% !important;
+        overflow-y: scroll !important;
         h2{
             margin-top:30%;
         }
@@ -71,14 +72,11 @@ $lightblack: #1d1d1d;
     .readyButton, .saveEditedEvent{
         font-size:14px !important;
         padding:10px 10px !important;
+        margin-top:0 !important
     }
     .readyButton{
-        width:550px !important;
-        margin-right:10px;
-    }
-    .saveEditedEvent{
-        width:250px;
-        margin-left:10px;
+        min-width: 40% !important;
+        margin:5% 1% !important;
     }
 }
 
